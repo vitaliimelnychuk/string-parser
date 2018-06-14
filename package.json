@@ -1,0 +1,32 @@
+{
+  "name": "string-parser",
+  "version": "1.0.0",
+  "description": "Complicated string parser that uses shunting yard algorithm and bool conditions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/melnychukvitaliy/string-parser.git"
+  },
+  "keywords": [
+    "shunting-yard",
+    "algorithm",
+    "string-parser"
+  ],
+  "author": "Vitalii Melnychuk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/melnychukvitaliy/string-parser/issues"
+  },
+  "homepage": "https://github.com/melnychukvitaliy/string-parser#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "husky": "^0.14.3",
+    "mocha": "^5.2.0",
+    "nyc": "^12.0.2",
+    "proxyquire": "^2.0.1",
+    "sinon": "^6.0.0"
+  }
+}
