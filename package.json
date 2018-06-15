@@ -4,7 +4,10 @@
   "description": "Complicated string parser that uses shunting yard algorithm and bool conditions",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --recursive"
+    "test": "./node_modules/.bin/mocha --recursive",
+    "coverage": "./node_modules/.bin/nyc --reporter=html --reporter=text ./node_modules/.bin/mocha --recursive",
+    "eslint": "./node_modules/.bin/eslint ./app ./test",
+    "precommit": "npm test && npm run eslint"
   },
   "repository": {
     "type": "git",

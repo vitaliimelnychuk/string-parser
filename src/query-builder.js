@@ -5,12 +5,18 @@ class QueryBuidler {
         this.string = string;
         this.query = {
             q: {
+                must: [],
                 should: [],
             },
             company: {
+                must: [],
                 should: [],
             },
         };
+        this.operands = {
+            OR: 'should',
+            AND: 'must'
+        }
     }
 
     buildStringFromQuery(query) {
@@ -36,29 +42,55 @@ class QueryBuidler {
 
     processTokensByField(tokens) {
         let field = this.query.q;
+        let operand = this.operands.AND;
 
         for (let i in tokens) {
-            switch (tokens[i]) {
-                case fields.company:
-                    field = this.query.company;
-                    break;
-                case fields.query:
-                    field = this.query.q;
-                    break;
-                default:
-                    this.processToken(field, tokens[i]);
+            i = parseInt(i);
+            if (this.isField(tokens[i])) {
+                field = this.getField(tokens[i])
+            } else {
+                operand = this.processToken(field, operand, tokens[i], tokens[i + 1]);
             }
         }
     }
 
-    processToken(object, token) {
+    getField(token) {
         switch (token) {
-            case operands.OR:
-                break;
+            case fields.company:
+                return this.query.company;
+            case fields.query:
+                return this.query.q;
             default:
-                object.should.push(token);
-                return;
+                return false;
         }
+    }
+
+    isField(token) {
+        return Object.values(fields).includes(token);
+    }
+
+    getOperand(token) {
+        return this.operands[token];
+    }
+
+    isOperand(token) {
+        return operands[token];
+    }
+
+    processToken(object, currentOperand, token, nextToken, prev) {
+        if (this.isOperand(token))
+            return this.getOperand(token)
+
+        if (this.isOperand(nextToken))
+            currentOperand = this.getOperand(nextToken);
+
+        object[currentOperand].push(token);
+
+        if (!this.isOperand(nextToken))
+            currentOperand = this.operands[operands.AND];
+
+        return currentOperand;
+
     }
 
 }

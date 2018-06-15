@@ -10,6 +10,7 @@ module.exports.getTokens = string => {
 
 module.exports.operands = {
     OR: "OR",
+    AND: "AND"
 }
 
 module.exports.fields = {
