@@ -111,4 +111,33 @@ describe("query-builder", () => {
             assert.deepEqual(queryBuilder.build("company: Must be words here test1 OR test2 Software AND Engineer").getQuery(), expectedQuery)
         })
     })
+    describe("#buildStringFromQuery", () => {
+        it("should return string builded from query", () => {
+            const queryBuilder = new QueryBuilder();
+            const expectedQuery = getQuery();
+            expectedQuery.company.should = ["test1", "test2"];
+            expectedQuery.company.must = ["Must", "be", "words", "here", "Software", "Engineer"];
+
+            assert.deepEqual(queryBuilder.buildStringFromQuery(expectedQuery).getString(), "company: Must be words here Software Engineer test1 OR test2")
+        });
+        it("should return empty string", () => {
+            const queryBuilder = new QueryBuilder();
+            const expectedQuery = getQuery();
+            assert.deepEqual(queryBuilder.buildStringFromQuery(expectedQuery).getString(), "")
+        })
+        it("should return must results string", () => {
+            const queryBuilder = new QueryBuilder();
+            const expectedQuery = getQuery();
+            expectedQuery.company.must = ["test1", "test2"];
+            expectedQuery.q.must = ["test3", "test4"];
+            assert.equal(queryBuilder.buildStringFromQuery(expectedQuery).getString(), "test3 test4 company: test1 test2")
+        })
+        it("should return should results string", () => {
+            const queryBuilder = new QueryBuilder();
+            const expectedQuery = getQuery();
+            expectedQuery.company.should = ["test1", "test2"];
+            expectedQuery.q.should = ["test3", "test4"];
+            assert.equal(queryBuilder.buildStringFromQuery(expectedQuery).getString(), "test3 OR test4 company: test1 OR test2")
+        })
+    })
 });

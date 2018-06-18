@@ -21,8 +21,29 @@ class QueryBuidler {
 
     buildStringFromQuery(query) {
         this.query = query;
+        const blocks = [];
+        const qPart = this.buildStringByField("", query.q);
+        const companyPart = this.buildStringByField(fields.company, query.company);
+        if (qPart.length > 0)
+            blocks.push(qPart);
+        if (companyPart.length > 0)
+            blocks.push(companyPart);
+
+        this.string = blocks.join(" ");
 
         return this;
+    }
+
+    buildStringByField(name, object) {
+        const blocks = [];
+        if (name.length > 0 && (object.must.length > 0 || object.should.length > 0))
+            blocks.push(name);
+        if (object.must.length > 0)
+            blocks.push(object.must.join(" "));
+        if (object.should.length > 0)
+            blocks.push(object.should.join(` ${operands.OR} `));
+
+        return blocks.join(" ");
     }
 
     build(string) {
