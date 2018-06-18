@@ -81,8 +81,6 @@ class QueryBuidler {
                 return this.query.company;
             case fields.query:
                 return this.query.q;
-            default:
-                return false;
         }
     }
 
